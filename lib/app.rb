@@ -60,7 +60,7 @@ class CassandraExampleApp < Sinatra::Base
   def cassandra_connection_details
     @cassandra_connection_details ||= begin
       require "cf-app-utils"                                                                              
-      CF::App::Credentials.find_all_by_all_service_tags(%w[cassandra pivotal]).first
+      CF::App::Credentials.find_all_by_all_service_tags(%w[docker]).first
     end
   end
 
