@@ -102,7 +102,9 @@ class CassandraClient < SimpleDelegator
   end
 
   def keyspace_name
-    connection_details.fetch('keyspace_name')
+    uri = connection_details.fetch('uri')
+    keyspace = uri[/^.*\W(\w*)$/,1]
+    keyspace
   end
 
   def username
@@ -114,7 +116,11 @@ class CassandraClient < SimpleDelegator
   end
 
   def hosts
-    connection_details.fetch('node_ips', %w[localhost])
+    [connection_details.fetch('host', 'localhost')]
+  end
+
+  def port
+    connection_details.fetch('port', "9042")
   end
 
   def connection_timeout
@@ -129,6 +135,7 @@ class CassandraClient < SimpleDelegator
         password: password,
       },
       hosts: hosts,
+      port: port,
       connection_timeout: connection_timeout,
     }
   end
